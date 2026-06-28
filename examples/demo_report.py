@@ -16,10 +16,10 @@ from uestc_doc.templates.uestc_thesis import build_report, ReportType
 def make_meta():
     """创建示例项目元数据 — 请替换为你的实际信息。"""
     return ProjectMeta(
-        course_name="进阶式挑战性综合项目II",
-        college="信息与软件工程学院",
+        course_name="综合设计项目",
+        college="XX学院",
         semester="2025-2026 学年 2 学期",
-        project_name="SysY 语言编译器",
+        project_name="XXX项目",
         advisor="指导教师姓名",
         students=[
             {"name": "组长姓名", "id": "2024XXXXXX"},
@@ -27,12 +27,12 @@ def make_meta():
             {"name": "成员3", "id": "2024XXXXXX"},
         ],
         abstract_text=(
-            "本报告聚焦于SysY语言编译器的设计与实现。"
-            "编译器以SysY源程序为输入，经过词法分析、语法分析构建AST，"
-            "通过Visitor设计模式生成LLVM兼容的IR，经自研PassManager框架"
-            "调度的多级优化Pass深度优化后，最终输出RISC-V汇编代码。"
+            "本报告聚焦于示例语言系统的设计与实现。"
+            "系统以项目源码为输入，经过输入解析、结构分析构建AST，"
+            "通过Visitor设计模式生成中间表示兼容的IR，经自研PipelineManager框架"
+            "调度的多级优化Pass深度优化后，最终输出目标平台汇编代码。"
         ),
-        keywords_text="SysY语言；编译器设计；LLVM IR；PassManager；代码优化",
+        keywords_text="示例语言；系统设计；中间表示 IR；PipelineManager；代码优化",
     )
 
 
@@ -43,17 +43,17 @@ def demo_midterm():
         # ── 1.1 方案设计 ──
         design={
             'architecture_desc': (
-                "本编译器采用经典的三阶段流水线架构：前端（Flex+Bison）→ "
-                "中端（自研PassManager + LLVM兼容IR）→ 后端（RISC-V/ARM）。"
+                "本系统采用经典的三阶段流水线架构：前端（Tokenizer+Parser）→ "
+                "中端（自研PipelineManager + 中间表示兼容IR）→ 后端（目标平台/目标平台）。"
             ),
             'modules': [
                 ('前端设计', 3, [
-                    "词法分析采用Flex生成DFA，识别所有SysY Token类型。",
-                    "语法分析采用GNU Bison LALR(1)，在归约时直接构建AST。",
+                    "输入解析采用Tokenizer生成DFA，识别所有示例 Token类型。",
+                    "结构分析采用GNU Parser LALR(1)，在归约时直接构建AST。",
                 ]),
                 ('中端设计', 3, [
-                    "IR采用与LLVM兼容的指令体系，共33种指令类型。",
-                    "PassManager基于CRTP+类型擦除模式，支持非侵入式扩展。",
+                    "IR采用与中间表示兼容的指令体系，共33种指令类型。",
+                    "PipelineManager基于CRTP+类型擦除模式，支持非侵入式扩展。",
                 ]),
             ],
         },
@@ -61,7 +61,7 @@ def demo_midterm():
         reasoning={
             'complex_problems': [
                 ('静态单赋值形式的构建与销毁', [
-                    "SSA形式是现代编译器优化的数学基础。构建SSA需要在迭代支配边界上放置Phi节点。",
+                    "核心结构形式是现代系统优化的数学基础。构建核心结构需要在迭代支配边界上放置汇合节点。",
                     "变量重命名阶段需在支配树上DFS遍历，维护每个变量的版本栈。",
                 ]),
                 ('寄存器分配与溢出处理', [
@@ -74,7 +74,7 @@ def demo_midterm():
         impl={
             'modules': [
                 ('前端实现', [
-                    "Flex词法分析器：由src/yacc/sysy.l规则文件生成，每次调用yylex()返回Token。",
+                    "Tokenizer输入解析器：由src/yacc/example.l规则文件生成，每次调用yylex()返回Token。",
                     "IRGenerator（983行）：采用Visitor模式+栈驱动上下文管理，为每个AST节点生成IR。",
                 ]),
                 ('中端Analysis Pass', [
@@ -83,14 +83,14 @@ def demo_midterm():
                 ]),
             ],
             'code_examples': [
-                ('Mem2Reg核心算法：', '// Phi插入: IDF计算\nfor (auto &alloca : allocas) {\n    computeIDF(alloca, phi_blocks);\n}', 'cpp'),
+                ('核心算法核心算法：', '// Phi插入: IDF计算\nfor (auto &alloca : allocas) {\n    computeIDF(alloca, phi_blocks);\n}', 'cpp'),
             ],
         },
         # ── 1.4 知识技能学习 ──
         skills={
             'areas': [
                 ('一、编译理论与算法', [
-                    ('SSA与数据流分析', '掌握了支配树/IDF/变量重命名等核心算法。'),
+                    ('核心结构与数据流分析', '掌握了支配树/IDF/变量重命名等核心算法。'),
                     ('抽象解释', '理解了格理论/Widening/Narrowing的收敛加速技术。'),
                 ]),
                 ('二、软件工程能力', [
@@ -101,15 +101,15 @@ def demo_midterm():
         # ── 第二章 问题与方案 ──
         problems={
             'problems': [
-                ('问题一：SSA构建的复杂性', [
-                    'Mem2Reg涉及6个阶段的复杂变换，变量重命名的正确性极难保证。',
+                ('问题一：核心模块构建的复杂性', [
+                    '核心算法涉及6个阶段的复杂变换，变量重命名的正确性极难保证。',
                 ]),
                 ('问题二：别名分析精度', [
                     'GEP的灵活偏移和PHI多来源聚合使基址追踪困难，分析被迫退回MayAlias。',
                 ]),
             ],
             'solutions': [
-                ('方案一：Pruned SSA + 严格栈管理', [
+                ('方案一：Pruned 核心结构 + 严格栈管理', [
                     '引入活跃变量信息修剪冗余Phi，减少30-40%无用节点。',
                     'Rename阶段记录栈深度，确保路径栈操作严格匹配。',
                 ]),
@@ -118,8 +118,8 @@ def demo_midterm():
         # ── 第三章 完成度与计划 ──
         plan={
             'completion_rows': [
-                ["前端", "词法+语法分析", "100%", "测试通过"],
-                ["中端", "PassManager框架", "100%", "CRTP+类型擦除完成"],
+                ["前端", "词法+结构分析", "100%", "测试通过"],
+                ["中端", "PipelineManager框架", "100%", "CRTP+类型擦除完成"],
                 ["中端", "30个Transform Pass", "100%", "语义保持验证通过"],
                 ["后端", "指令选择+寄存器分配", "85%", "核心算法完成"],
                 ["测试", "全链路集成测试", "进行中", "目标100% AC"],
@@ -151,21 +151,21 @@ def demo_final():
         # ── 1.1 需求分析与建模 ──
         requirements={
             'functional_reqs': [
-                ('FR1: 词法分析与语法分析', '支持完整SysY词法和语法定义，构建完整AST。'),
-                ('FR2: 中间代码生成', '遍历AST生成LLVM兼容IR，覆盖所有核心IR指令。'),
+                ('FR1: 输入解析与结构分析', '支持完整示例词法和语法定义，构建完整AST。'),
+                ('FR2: 中间代码生成', '遍历AST生成中间表示兼容IR，覆盖所有核心IR指令。'),
                 ('FR3: 中端优化', '提供可扩展的优化管线，实现7个Analysis+30个Transform Pass。'),
             ],
             'nonfunctional_reqs': [
-                ('NFR1: 正确性', '通过SysY竞赛测试集，AC率≥95%。'),
+                ('NFR1: 正确性', '通过示例竞赛测试集，AC率≥95%。'),
                 ('NFR2: 性能', '优化后IR指令数减少≥40%，目标代码超越GCC -O2。'),
             ],
         },
         # ── 1.2 复杂工程问题 ──
         problems_induction={
             'problems': [
-                ('SSA构建与销毁', [
-                    '需要在IDF上精确放置Phi节点，同时利用Pruned SSA减少冗余。',
-                    '变量重命名必须精确处理控制流汇合，任何栈操作不匹配都会导致错误SSA。',
+                ('核心模块构建与销毁', [
+                    '需要在IDF上精确放置汇合节点，同时利用Pruned 核心结构减少冗余。',
+                    '变量重命名必须精确处理控制流汇合，任何栈操作不匹配都会导致错误核心结构。',
                 ]),
                 ('全局值编号与部分冗余消除', [
                     'GVN-PRE融合了CSE和PRE两项经典优化，1311行实现为本项目最大Transform Pass。',
@@ -175,10 +175,10 @@ def demo_final():
         # ── 3.2 核心功能完成 ──
         core_completion={
             'features': [
-                ["前端解析", "Flex+Bison+AST+IRGen", "全部完成", "✅ 完成", "LLI验证通过"],
-                ["中端优化", "7 Analysis + 30 Transform", "全部完成", "✅ 完成", "逐Pass语义保持"],
-                ["RISC-V后端", "ISel+RA+Frame+Peephole", "核心完成", "⚠ 调优中", "QEMU执行正确"],
-                ["ARM后端", "AArch64 ISel+RA", "基础完成", "⚠ 完善中", "Cortex-A53验证"],
+                ["前端解析", "解析+AST+代码生成", "全部完成", "✅ 完成", "LLI验证通过"],
+                ["中端优化", "核心分析模块", "全部完成", "✅ 完成", "逐Pass语义保持"],
+                ["目标平台后端", "ISel+RA+Frame+Peephole", "核心完成", "⚠ 调优中", "QEMU执行正确"],
+                ["目标平台后端", "AArch64 ISel+RA", "基础完成", "⚠ 完善中", "Cortex-A53验证"],
             ],
         },
         # ── 3.3 仿真效果 ──
@@ -192,9 +192,9 @@ def demo_final():
         # ── 第四章 分工协作 ──
         team={
             'members': [
-                ["组长", "系统架构", "PassManager/RangeAnalysis/GVN-PRE", "35%"],
-                ["成员2", "前端+测试", "Flex/Bison/AST/IRGen/测试体系", "35%"],
-                ["成员3", "后端", "RISC-V ISel/RegAlloc/ARM", "30%"],
+                ["组长", "系统架构", "PipelineManager/RangeAnalysis/GVN-PRE", "35%"],
+                ["成员2", "前端+测试", "Tokenizer/Parser/AST/IRGen/测试体系", "35%"],
+                ["成员3", "后端", "目标平台 ISel/RegAlloc/目标平台", "30%"],
             ],
             'tools': [
                 ("Git + GitHub", "版本控制与代码评审"),

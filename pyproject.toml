@@ -1,7 +1,7 @@
 [project]
 name = "uestc-doc-writing"
 version = "1.0.0"
-description = "通用学术报告/论文文档自动生成框架 — 针对电子科技大学软院模板优化，支持 Mermaid 图渲染、代码提取、章节 Pipeline 生成"
+description = "通用学术报告/论文文档自动生成框架 — 针对学术模板优化，支持 Mermaid 图渲染、代码提取、章节 Pipeline 生成"
 authors = [
     {name = "ABLingss"}
 ]

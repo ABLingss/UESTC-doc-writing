@@ -10,7 +10,7 @@
 
 <br>
 
-**电子科技大学综合设计报告一键生成。中期/后期双模板，Mermaid 架构图自动渲染，C/C++/Python/LLVM IR/RISC-V/ARM/x86 七种语言代码高亮，源码信息自动提取。**
+**电子科技大学综合设计报告一键生成。中期/后期双模板，Mermaid 架构图自动渲染，C/C++/Python/中间表示 IR/目标平台/目标平台/x86 七种语言代码高亮，源码信息自动提取。**
 
 <sub>基于开放的 [Agent Skills 协议](https://agentskills.io)，可在 Claude Code、Codex、Cursor 等兼容 runtime 中运行。同时也是完整 Python 库，可独立调用。</sub>
 
@@ -23,12 +23,12 @@
 **安装 Skill 后，跟 AI 对话就行了：**
 
 ```
-用户 ❯ 帮我生成一份综设中期报告，课题是 SysY 语言编译器，指导老师是黄老师
+用户 ❯ 帮我生成一份综设中期报告，课题是 XXX项目，指导老师是某老师
 
 AI   ❯ 好的。请确认以下信息：
-        课程：进阶式挑战性综合项目II
-        学院：信息与软件工程学院
-        课题：SysY 语言编译器
+        课程：综合设计项目
+        学院：XX学院
+        课题：XXX项目
         ...
         确认无误，开始生成。
 
@@ -45,11 +45,11 @@ AI   ❯ 好的。请确认以下信息：
 **不只是生成空壳——AI 会帮你写内容：**
 
 ```
-用户 ❯ 给 1.2 推理分析加两个复杂工程问题：SSA构建 和 寄存器分配
+用户 ❯ 给 1.2 推理分析加两个复杂工程问题：核心模块构建 和 寄存器分配
 
 AI   ❯ 已更新 1.2 节，新增：
         复杂工程问题一：静态单赋值形式的构建与销毁
-        - SSA 的数学定义与 Phi 节点放置
+        - 核心结构 的数学定义与 Phi 节点放置
         - 迭代支配边界的计算复杂度
         - 变量重命名的正确性保证
 
@@ -60,7 +60,7 @@ AI   ❯ 已更新 1.2 节，新增：
 ```
 
 ```
-用户 ❯ 把 src/ir/opt/Mem2Reg.cpp 的第 45-78 行插入到 1.3 节，用 C++ 高亮，标题「代码1-1 Rename 阶段」
+用户 ❯ 把 src/ir/opt/核心算法.cpp 的第 45-78 行插入到 1.3 节，用 C++ 高亮，标题「代码1-1 Rename 阶段」
 
 AI   ❯ 已插入代码块「代码1-1 Rename 阶段」，C++ 语法高亮，行号 45-78。
 ```
@@ -84,7 +84,7 @@ AI   ❯ 已更新表3-1 前期任务完成度总览：
 |---|---|---|
 | 封面信息 | 手动填，容易写错 | 一句话 |
 | 目录 | 手动插域 → 更新 | 自动生成 |
-| 格式（字体/字号/行距/缩进） | 逐个段落调 | 自动符合软院规范 |
+| 格式（字体/字号/行距/缩进） | 逐个段落调 | 自动符合学术规范 |
 | 代码块 | 手动换字体、着色 | 自动语法高亮 + 行号 |
 | Mermaid 图 | 截图 → 缩放 → 对齐 | 自动渲染 → 插入 |
 | 改格式 | 全文档重调 | 改一行 StyleConfig |
@@ -157,14 +157,14 @@ from uestc_doc import (
 )
 
 meta = ProjectMeta(
-    course_name="进阶式挑战性综合项目II",
-    college="信息与软件工程学院",
+    course_name="综合设计项目",
+    college="XX学院",
     semester="2025-2026 学年 2 学期",
-    project_name="SysY 语言编译器",
+    project_name="XXX项目",
     advisor="指导教师姓名",
     students=[{"name": "张三", "id": "20240001"}],
     abstract_text="本报告聚焦于...",
-    keywords_text="编译器；LLVM；代码优化",
+    keywords_text="系统；中间表示；代码优化",
 )
 
 doc = new_document()
@@ -189,7 +189,7 @@ add_table(doc,
 )
 
 add_references(doc, [
-    "[1] Aho A V, et al. Compilers: Principles, Techniques, and Tools[M]. 2006.",
+    "[1] Aho A V, et al. Systems: Principles, Techniques, and Tools[M]. 2006.",
 ])
 
 doc.save("我的报告.docx")
@@ -202,8 +202,8 @@ from uestc_doc import ProjectMeta
 from uestc_doc.templates.uestc_thesis import build_report, ReportType
 
 meta = ProjectMeta(
-    course_name="进阶式挑战性综合项目II",
-    college="信息与软件工程学院",
+    course_name="综合设计项目",
+    college="XX学院",
     semester="2025-2026 学年 2 学期",
     project_name="My Project",
     advisor="指导教师",

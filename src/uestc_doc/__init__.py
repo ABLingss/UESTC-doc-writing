@@ -1,8 +1,8 @@
 """
-UESTC-doc-writing — 电子科技大学学术报告/论文文档自动生成框架
+UESTC-doc-writing — 学术报告/论文文档自动生成框架
 
 提供:
-- 符合软院规范的 Word 文档样式系统 (styles.py)
+- 符合学术规范的 Word 文档样式系统 (styles.py)
 - 可复用文档组件 (components.py): 封面/目录/代码块/图表/表格
 - Mermaid 图渲染管线: mermaid.ink / mmdc CLI / 纯Python fallback
 - 代码信息提取器: C/C++ / Python 源码扫描

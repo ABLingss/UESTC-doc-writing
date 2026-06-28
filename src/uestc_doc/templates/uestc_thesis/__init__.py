@@ -1,5 +1,5 @@
 """
-UESTC 软院综合设计报告模板。
+UESTC 综合设计报告模板。
 
 支持两种报告结构:
 - midterm:  中期报告 (3章: 进展 + 问题与方案 + 完成度与计划)
@@ -9,10 +9,10 @@ Usage:
     from uestc_doc.templates.uestc_thesis import build_report
 
     meta = ProjectMeta(
-        course_name="进阶式挑战性综合项目II",
-        college="信息与软件工程学院",
+        course_name="综合设计项目",
+        college="XX学院",
         semester="2025-2026 学年 2 学期",
-        project_name="SysY 语言编译器",
+        project_name="XXX项目",
         advisor="某教授",
         students=[{"name": "张三", "id": "20240001"}],
         abstract_text="本报告...",

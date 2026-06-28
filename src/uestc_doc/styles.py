@@ -1,11 +1,11 @@
 """
-样式定义模块 — 针对电子科技大学学术报告/论文模板优化。
+样式定义模块 — 针对学术报告/论文模板优化。
 所有参数可覆盖，无个人信息硬编码。
 
 Usage:
     from uestc_doc.styles import setup_styles, setup_page, StyleConfig
     doc = Document()
-    config = StyleConfig(header_text="XX学院 综合设计报告")
+    config = StyleConfig(header_text="学术报告")
     setup_styles(doc, config)
 """
 
@@ -27,7 +27,7 @@ A4_HEIGHT = Cm(29.7)
 class StyleConfig:
     """可覆盖的样式配置 — 适配不同院系/课程模板。
 
-    所有字段均有默认值（电子科大软院规范），可通过构造参数覆盖。
+    所有字段均有默认值（电子科大学术规范），可通过构造参数覆盖。
     """
     # ── 页边距 ──
     margin_top_body: object = Cm(2.88)

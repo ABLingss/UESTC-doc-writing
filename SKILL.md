@@ -49,8 +49,8 @@ from uestc_doc import ProjectMeta
 from uestc_doc.templates.uestc_thesis import build_report, ReportType
 
 meta = ProjectMeta(
-    course_name="进阶式挑战性综合项目II",
-    college="信息与软件工程学院",
+    course_name="综合设计项目",
+    college="XX学院",
     semester="2025-2026 学年 2 学期",
     project_name="My Project",
     advisor="指导教师姓名",
@@ -116,17 +116,17 @@ doc = build_report(meta, report_type=ReportType.FINAL,
     # Chapter 1 content
     requirements={
         'functional_reqs': [
-            ('FR1: Lexical Analysis', 'Support all SysY token types...'),
+            ('FR1: Lexical Analysis', 'Support all language token types...'),
             ('FR2: Syntax Analysis', 'Build complete AST with 26 node types...'),
         ],
         'nonfunctional_reqs': [
-            ('NFR1: Correctness', 'AC rate >= 95% on SysY test suite.'),
+            ('NFR1: Correctness', 'AC rate >= 95% on 示例 test suite.'),
         ],
     },
     problems_induction={
         'problems': [
-            ('SSA Construction', [
-                'SSA form is the mathematical foundation of modern compiler optimization.',
+            ('核心结构 Construction', [
+                '核心结构 form is the mathematical foundation of modern system optimization.',
                 'Phi node placement requires iterative dominance frontier computation.',
             ]),
         ],
@@ -134,12 +134,12 @@ doc = build_report(meta, report_type=ReportType.FINAL,
     # Chapter 2: Problems & Solutions
     problems={
         'problems': [
-            ('Problem 1: SSA Correctness', [
-                'The 6-phase Mem2Reg transformation is extremely complex...',
+            ('Problem 1: 核心结构 Correctness', [
+                'The 6-phase 核心算法 transformation is extremely complex...',
             ]),
         ],
         'solutions': [
-            ('Solution 1: Pruned SSA + Strict Stack Management', [
+            ('Solution 1: Pruned 核心结构 + Strict Stack Management', [
                 'Use liveness info to prune unnecessary Phi nodes (30-40% reduction).',
             ]),
         ],
@@ -147,15 +147,15 @@ doc = build_report(meta, report_type=ReportType.FINAL,
     # Chapter 3: Completion status
     core_completion={
         'features': [
-            ["Frontend", "Flex+Bison+AST+IRGen", "Complete", "DONE", "LLI verified"],
-            ["Midend", "7 Analysis + 30 Transform", "Complete", "DONE", "Per-pass verified"],
+            ["Frontend", "解析+AST+代码生成", "Complete", "DONE", "LLI verified"],
+            ["Midend", "核心分析模块", "Complete", "DONE", "Per-pass verified"],
         ],
     },
     # Chapter 4: Team
     team={
         'members': [
-            ["Team Lead", "Architecture", "PassManager/RangeAnalysis", "35%"],
-            ["Member 2", "Frontend+Test", "Flex/Bison/IRGen", "35%"],
+            ["Team Lead", "Architecture", "PipelineManager/RangeAnalysis", "35%"],
+            ["Member 2", "Frontend+Test", "解析/代码生成", "35%"],
         ],
     },
 )
@@ -175,7 +175,7 @@ from uestc_doc import (
 )
 
 config = StyleConfig(
-    header_text="信息与软件工程学院 综合设计报告",
+    header_text="学术报告",
     cn_font_body="宋体",
     cn_font_heading="黑体",
 )
@@ -218,9 +218,9 @@ add_code_block(doc, code_string,
     caption="Code 4-1 Core Algorithm Implementation")
 
 # From file (auto-detect language by extension)
-add_code_block(doc, file="src/opt/Mem2Reg.cpp",
+add_code_block(doc, file="src/opt/核心算法.cpp",
     start_line=45, end_line=78,
-    caption="Code 4-2 Mem2Reg Rename Phase")
+    caption="Code 4-2 核心算法 Rename Phase")
 
 # Highlight specific lines
 add_code_block(doc, code_string,
@@ -235,8 +235,8 @@ add_code_block(doc, code_string,
 | C/C++ | `"cpp"`, `"c"` | 70 C/C++ keywords + type names |
 | Python | `"python"`, `"py"` | 40 Python keywords |
 | LLVM IR | `"llvm"`, `"ir"` | 40 IR instructions + C++ keywords |
-| RISC-V ASM | `"riscv"`, `"rv"` | RV64G instructions + registers |
-| ARM ASM | `"arm"`, `"aarch64"` | AArch64 instructions + registers |
+| 目标平台 ASM | `"riscv"`, `"rv"` | RV64G instructions + registers |
+| 目标平台 ASM | `"arm"`, `"aarch64"` | AArch64 instructions + registers |
 | x86 ASM | `"x86"`, `"asm"` | x86-64 instructions + registers |
 | Auto-detect | `""` or omit | Combines all keyword sets |
 
@@ -334,7 +334,7 @@ add_mermaid_image(doc, "output/architecture.png",
 ```python
 from uestc_doc.extractors import scan_cpp_project
 
-result = scan_cpp_project("/path/to/compiler/src")
+result = scan_cpp_project("/path/to/system/src")
 # result['overview']  — ProjectOverview with stats
 # result['passes']    — [CppPassInfo, ...] categorized by type
 # result['headers']   — {file: header_comment, ...}
@@ -396,7 +396,7 @@ config = StyleConfig(
     size_code=9.0,
 
     # Header text
-    header_text="XX学院 综合设计报告",
+    header_text="学术报告",
 
     # Colors
     code_bg="F5F5F5",

@@ -1,5 +1,5 @@
 """
-UESTC 软院综合设计报告 Builder。
+UESTC 综合设计报告 Builder。
 
 组装封面+目录+各章节, 生成完整 .docx 文档。
 
@@ -46,15 +46,15 @@ class ReportType(str, Enum):
 
 # 默认参考文献 (编译领域经典)
 DEFAULT_REFS = [
-    "[1] Aho A V, Lam M S, Sethi R, Ullman J D. Compilers: Principles, Techniques, and Tools (2nd Edition)[M]. Addison-Wesley, 2006.",
+    "[1] Aho A V, Lam M S, Sethi R, Ullman J D. Systems: Principles, Techniques, and Tools (2nd Edition)[M]. Addison-Wesley, 2006.",
     "[2] Cooper K D, Torczon L. Engineering a Compiler (2nd Edition)[M]. Morgan Kaufmann, 2011.",
-    "[3] Lattner C, Adve V. LLVM: A Compilation Framework for Lifelong Program Analysis & Transformation[C]. CGO 2004: 75-86.",
+    "[3] Lattner C, Adve V. 中间表示: A Compilation Framework for Lifelong Program Analysis & Transformation[C]. CGO 2004: 75-86.",
     "[4] Cytron R, Ferrante J, Rosen B K, et al. Efficiently Computing Static Single Assignment Form and the Control Dependence Graph[J]. ACM TOPLAS, 1991, 13(4): 451-490.",
     "[5] Lengauer T, Tarjan R E. A Fast Algorithm for Finding Dominators in a Flowgraph[J]. ACM TOPLAS, 1979, 1(1): 121-141.",
     "[6] Cousot P, Cousot R. Abstract Interpretation: A Unified Lattice Model for Static Analysis[C]. POPL 1977: 238-252.",
     "[7] Briggs P, Cooper K D, Torczon L. Improvements to Graph Coloring Register Allocation[J]. ACM TOPLAS, 1994, 16(3): 428-455.",
     "[8] Wegman M N, Zadeck F K. Constant Propagation with Conditional Branches[J]. ACM TOPLAS, 1991, 13(2): 181-210.",
-    "[9] Patterson D, Waterman A. The RISC-V Reader: An Open Architecture Atlas[M]. Strawberry Canyon, 2017.",
+    "[9] Patterson D, Waterman A. The 目标平台 Reader: An Open Architecture Atlas[M]. Strawberry Canyon, 2017.",
     "[10] LLVM Documentation: Writing an LLVM Pass[EB/OL]. https://llvm.org/docs/WritingAnLLVMPass.html.",
 ]
 
@@ -70,7 +70,7 @@ def build_report(meta: ProjectMeta,
     Args:
         meta: 项目元数据 (课程/导师/学生等)
         report_type: MIDTERM (中期) 或 FINAL (后期)
-        style_config: 样式配置 (None=默认软院规范)
+        style_config: 样式配置 (None=默认学术规范)
         refs: 参考文献列表
         acknowledgments: 致谢内容 (仅后期报告)
         **section_kwargs: 传递给各章节生成函数的额外参数

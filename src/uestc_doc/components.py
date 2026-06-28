@@ -28,10 +28,10 @@ class ProjectMeta:
 
     Examples:
         meta = ProjectMeta(
-            course_name="进阶式挑战性综合项目II",
-            college="信息与软件工程学院",
+            course_name="综合设计项目",
+            college="XX学院",
             semester="2025-2026 学年 2 学期",
-            project_name="SysY 语言编译器",
+            project_name="XXX项目",
             advisor="张教授",
             students=[{"name": "张三", "id": "20240001"}],
         )
@@ -271,7 +271,7 @@ def add_code_block(doc: Document, code_text: str = "",
         language: "cpp"|"c"|"python"|"py"|"llvm"|"ir"|
                   "riscv"|"rv"|"arm"|"aarch64"|"x86"|"asm"|"bash"|"sh"|""
         style_config: StyleConfig
-        caption: 代码块标题 (如 "代码4-1 Mem2Reg核心算法")
+        caption: 代码块标题 (如 "代码4-1 核心算法核心算法")
         file: 从文件读取代码 (与 code_text 二选一)
         start_line: 起始行 (1-based, 配合 file 使用)
         end_line: 结束行 (1-based, 配合 file 使用; 0=到末尾)
@@ -312,17 +312,17 @@ def add_code_block(doc: Document, code_text: str = "",
     elif lang_lower in ("py", "python"):
         KWDS = _PY_KEYWORDS
     elif lang_lower in ("llvm", "ir"):
-        KWDS = _CPP_KEYWORDS | _LLVM_KEYWORDS
+        KWDS = _CPP_KEYWORDS | _中间表示_KEYWORDS
     elif lang_lower in ("riscv", "rv"):
         KWDS = _RISCV_KEYWORDS
     elif lang_lower in ("arm", "aarch64"):
-        KWDS = _ARM_KEYWORDS
+        KWDS = _目标平台_KEYWORDS
     elif lang_lower in ("x86", "asm"):
         KWDS = _X86_KEYWORDS
     elif lang_lower in ("bash", "sh"):
         KWDS = _BASH_KEYWORDS
     else:
-        KWDS = _CPP_KEYWORDS | _PY_KEYWORDS | _LLVM_KEYWORDS
+        KWDS = _CPP_KEYWORDS | _PY_KEYWORDS | _中间表示_KEYWORDS
 
     TYPES = _TYPE_KEYWORDS
     if highlight_lines is None:
@@ -375,10 +375,10 @@ def add_code_block(doc: Document, code_text: str = "",
                 elif txt in TYPES:
                     tokens.append((txt, style_config.code_type))
                 elif txt.startswith('x') and txt[1:].isdigit():
-                    # ARM 寄存器 x0-x30
+                    # 目标平台 寄存器 x0-x30
                     tokens.append((txt, RGBColor(0xC0, 0x00, 0x00)))
                 elif txt.startswith('v') and txt[1:].isdigit():
-                    # ARM SIMD 寄存器 v0-v31
+                    # 目标平台 SIMD 寄存器 v0-v31
                     tokens.append((txt, RGBColor(0xC0, 0x00, 0x00)))
                 else:
                     tokens.append((txt, style_config.color_black))
@@ -451,7 +451,7 @@ _PY_KEYWORDS = {
     'set', 'tuple', 'type', 'isinstance', 'super', '__init__',
 }
 
-_LLVM_KEYWORDS = {
+_中间表示_KEYWORDS = {
     'define', 'declare', 'target', 'datalayout', 'triple', 'module',
     'global', 'constant', 'private', 'internal', 'available_externally',
     'linkonce', 'noreturn', 'nounwind', 'noinline', 'call', 'ret',
@@ -470,11 +470,11 @@ _TYPE_KEYWORDS = {
     'fp128', 'void', 'label', 'metadata', 'token', 'ptr', 'opaque',
     'Value', 'User', 'Use', 'Instruction', 'BasicBlock',
     'Function', 'Module', 'IRType', 'TypeSystem',
-    'PreservationStatus', 'PassID', 'PassManager',
+    'PreservationStatus', 'PassID', 'PipelineManager',
 }
 
 _RISCV_KEYWORDS = {
-    # RISC-V instructions (RV64G)
+    # 目标平台 instructions (RV64G)
     'add', 'addi', 'addiw', 'addw', 'sub', 'subw',
     'mul', 'mulw', 'div', 'divw', 'divu', 'divuw',
     'rem', 'remw', 'remu', 'remuw',
@@ -513,7 +513,7 @@ _RISCV_KEYWORDS = {
     '.equ', '.macro', '.endm', '.type', '.size', '.file', '.loc',
 }
 
-_ARM_KEYWORDS = {
+_目标平台_KEYWORDS = {
     # AArch64 instructions
     'add', 'adds', 'sub', 'subs', 'mul', 'madd', 'msub',
     'sdiv', 'udiv', 'and', 'ands', 'orr', 'eor', 'eon',
@@ -581,7 +581,7 @@ def add_mermaid_image(doc: Document, image_path: str,
     Args:
         doc: Document
         image_path: PNG 文件路径 (绝对或相对)
-        caption: 图题，如 "图 3-1 编译器总体架构"
+        caption: 图题，如 "图 3-1 系统总体架构"
         width_cm: 指定宽度(cm)，默认14cm
     """
     from PIL import Image as PILImage
