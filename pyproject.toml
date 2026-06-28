@@ -6,12 +6,12 @@ authors = [
     {name = "ABLingss"}
 ]
 readme = "README.md"
-license = {text = "GPL-3.0"}
+license = {text = "MIT"}
 requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Education",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Topic :: Text Processing :: Markup",
     "Topic :: Software Development :: Documentation",

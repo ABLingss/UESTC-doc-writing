@@ -3,7 +3,7 @@
 > *「你的综设报告，一句话就够了。」*
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
-[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-green.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-GPL--3.0-green.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Standard-green)](https://agentskills.io)
 [![skills.sh](https://img.shields.io/badge/skills.sh-Compatible-blue)](https://skills.sh)
 [![Multi-Runtime](https://img.shields.io/badge/Runtime-Claude%20Code%20·%20Codex%20·%20Cursor-blueviolet)](#-安装)
@@ -259,4 +259,4 @@ src/uestc_doc/
 
 ## License
 
-GPL-3.0 © ABLingss
+MIT © ABLingss

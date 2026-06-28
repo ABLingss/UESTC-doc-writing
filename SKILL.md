@@ -2,7 +2,7 @@
 name: uestc-doc
 description: |-
   Use this skill whenever the user wants to create, generate, or build academic reports, thesis documents, or .docx files for Chinese university coursework — especially UESTC (电子科技大学) software engineering comprehensive design reports. Triggers include: any mention of '综设报告', '中期报告', '后期报告', '学术报告', '论文', 'docx生成', 'Word文档', or requests to produce formatted academic documents with tables of contents, Mermaid diagrams, code blocks with syntax highlighting, data tables, or letterheads. Also use when extracting code information from C/C++/Python projects for documentation, rendering Mermaid diagrams to PNG, or building report generation pipelines. Covers both midterm (中期) and final (后期) report formats with fully parameterized templates — never hardcodes personal/school info.
-license: GPL-3.0. Complete terms in LICENSE
+license: MIT. Complete terms in LICENSE
 ---
 
 # UESTC Academic Report Generation
