@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    {
+      "name": "uestc-doc",
+      "description": "综设.skill — 学术报告/论文文档自动生成框架。中期/后期双模板，Mermaid图渲染，7种语言代码高亮，C/C++/Python源码提取。",
+      "source": "./",
+      "skills": ["./"]
+    }
+  ]
+}
