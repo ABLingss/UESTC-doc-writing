@@ -6,7 +6,7 @@ authors = [
     {name = "ABLingss"}
 ]
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "GPL-3.0"}
 requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 4 - Beta",

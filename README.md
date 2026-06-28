@@ -3,7 +3,7 @@
 > 电子科技大学学术报告/论文文档自动生成框架
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-green.svg)](LICENSE)
 [![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-orange)](SKILL.md)
 
 一套完整的 **Word 文档自动生成 Pipeline**，针对电子科技大学软件学院学术报告/论文模板深度优化。支持 Mermaid 图渲染、C/C++/Python 源码信息提取、章节 Pipeline 独立生成与合并。
@@ -28,43 +28,25 @@
 
 将本仓库注册为 Claude Code 技能后，直接在对话中说「帮我生成综设中期报告」即可让 AI 自动完成。
 
-### 方法一：通过 /config 命令（推荐）
+### 方法一：从 Skill Market 一键安装（推荐）
+
+在 Claude Code 对话中输入：
+
+```
+/plugin install ABLingss/UESTC-doc-writing
+```
+
+Claude Code 会自动从 GitHub 拉取并注册技能。安装后直接对话即可触发。
+
+### 方法二：通过 /config 命令
 
 在 Claude Code 对话中输入：
 ```
 /config
 ```
-选择 **Skills** → **Add Skill** → 输入本仓库路径，或直接粘贴 `SKILL.md` 内容。
+选择 **Skills** → **Add Skill** → 输入 `https://github.com/ABLingss/UESTC-doc-writing` 即可。
 
-### 方法二：手动配置 settings.json
-
-编辑 `~/.claude/settings.json`，在 `skills` 数组中添加：
-
-```json
-{
-  "skills": [
-    {
-      "name": "uestc-doc",
-      "path": "/path/to/UESTC-doc-writing",
-      "description": "UESTC academic report/docx generation"
-    }
-  ]
-}
-```
-
-或者直接使用仓库中的 `SKILL.md`：
-```json
-{
-  "skills": [
-    {
-      "name": "uestc-doc",
-      "source": "https://raw.githubusercontent.com/ABLingss/UESTC-doc-writing/main/SKILL.md"
-    }
-  ]
-}
-```
-
-### 方法三：克隆仓库注册本地 Skill
+### 方法三：克隆仓库本地注册
 
 ```bash
 git clone https://github.com/ABLingss/UESTC-doc-writing.git
@@ -297,70 +279,6 @@ src/uestc_doc/
 - 电子科技大学软件学院进阶式挑战性综合项目报告
 - 编译器/系统软件课程设计报告
 - 本科毕业设计论文
-- 任何需要按模板生成 .docx 文档的学术场景
+- 任何需要按模板生成 .docx 文档的学术场景## License
 
----
-
-## 📣 推广与分享
-
-### 觉得有用？请给个 Star ⭐
-
-[![GitHub stars](https://img.shields.io/github/stars/ABLingss/UESTC-doc-writing?style=social)](https://github.com/ABLingss/UESTC-doc-writing)
-
-### 分享给同学
-
-```text
-🏫 写综设报告写到头秃？试试这个：
-
-https://github.com/ABLingss/UESTC-doc-writing
-
-✅ 5分钟生成一份格式完美的综设报告
-✅ 中期/后期双模板，课规格式零操心
-✅ Claude Code Skill 集成，一句话 AI 帮你写
-✅ C/C++/Python/LLVM IR/RISC-V/ARM 代码高亮
-✅ Mermaid 架构图自动渲染插入
-✅ 零个人信息硬编码，安全开源
-
-pip install -r requirements.txt 即可开箱即用
-```
-
-### 分享到飞书/钉钉群
-
-```text
-【综设报告神器推荐】
-
-https://github.com/ABLingss/UESTC-doc-writing
-
-不用再手动调格式了！Python 库一键生成符合软院规范的 .docx 报告。
-
-支持：中期报告模板 | 后期报告模板 | AI 辅助写作 | 代码高亮 | Mermaid图渲染
-
-开源 MIT 协议，点个 Star 支持一下～
-```
-
-### 同类项目对比
-
-| 特性 | UESTC-doc-writing | 手写 Word | pandoc | 其他模板 |
-|------|:--:|:--:|:--:|:--:|
-| 软院格式规范 | ✅ 内置 | 手动调 | ❌ | 需适配 |
-| AI Skill 集成 | ✅ /uestc-doc | ❌ | ❌ | ❌ |
-| 中期+后期双模板 | ✅ | 手动 | ❌ | 部分 |
-| 代码语法高亮 (7种) | ✅ | 手动着色 | 有限 | ❌ |
-| Mermaid 图渲染 (3策略) | ✅ | ❌ | 需插件 | ❌ |
-| C++/Python 源码提取 | ✅ | ❌ | ❌ | ❌ |
-| 完全参数化 | ✅ | N/A | N/A | 部分 |
-| 学习成本 | 5分钟 | 0 | 高 | 低 |
-
-### 贡献
-
-欢迎 PR！如果你为其他学院/课程适配了模板，欢迎贡献回来。
-
-常见贡献方向：
-- 适配其他学院/课程的模板格式
-- 新增更多语言的代码高亮
-- 改进 Mermaid 纯 Python 渲染器
-- 添加更多报告结构变体
-
-## License
-
-MIT © ABLingss
+GPL-3.0 © ABLingss

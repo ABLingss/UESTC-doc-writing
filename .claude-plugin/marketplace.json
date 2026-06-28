@@ -1,0 +1,22 @@
+{
+  "name": "uestc-doc-writing",
+  "owner": {
+    "name": "ABLingss",
+    "email": "ABLingss@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "UESTC 电子科技大学学术报告/论文文档自动生成框架 — 中期/后期报告模板、Mermaid图渲染、C/C++/Python源码提取、7种语言代码高亮",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "uestc-doc",
+      "description": "Generate professional .docx academic reports for UESTC software engineering coursework. Supports midterm (3-chapter) and final (4-chapter) report formats with parameterized templates, Mermaid diagram rendering, C/C++/Python source extraction, and syntax highlighting for 7 languages (C/C++, Python, LLVM IR, RISC-V, ARM, x86, Bash).",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./"
+      ]
+    }
+  ]
+}
