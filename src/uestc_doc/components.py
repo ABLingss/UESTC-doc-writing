@@ -255,35 +255,83 @@ def add_numbered_item(doc: Document, number: int, text: str,
 # 代码块 (语法高亮)
 # ═══════════════════════════════════════════════════════════════
 
-def add_code_block(doc: Document, code_text: str,
+def add_code_block(doc: Document, code_text: str = "",
                    language: str = "cpp",
-                   style_config: StyleConfig = None):
+                   style_config: StyleConfig = None,
+                   caption: str = "",
+                   file: str = "",
+                   start_line: int = 0,
+                   end_line: int = 0,
+                   highlight_lines: list = None):
     """带背景色+行号+语法着色的代码块。
 
     Args:
         doc: Document
-        code_text: 代码字符串
-        language: "cpp" | "python" | "llvm" | "c" | "" (自动检测)
+        code_text: 代码字符串 (与 file 二选一)
+        language: "cpp"|"c"|"python"|"py"|"llvm"|"ir"|
+                  "riscv"|"rv"|"arm"|"aarch64"|"x86"|"asm"|"bash"|"sh"|""
         style_config: StyleConfig
+        caption: 代码块标题 (如 "代码4-1 Mem2Reg核心算法")
+        file: 从文件读取代码 (与 code_text 二选一)
+        start_line: 起始行 (1-based, 配合 file 使用)
+        end_line: 结束行 (1-based, 配合 file 使用; 0=到末尾)
+        highlight_lines: 高亮行号列表, 如 [12, 13, 14]
     """
     import re
     if style_config is None:
         style_config = StyleConfig()
 
+    # 从文件读取
+    if file and os.path.exists(file):
+        with open(file, 'r', encoding='utf-8', errors='replace') as f:
+            all_lines = f.readlines()
+        if end_line == 0:
+            end_line = len(all_lines)
+        if start_line > 0:
+            all_lines = all_lines[start_line - 1:end_line]
+        code_text = ''.join(all_lines)
+        # 从扩展名推断语言
+        if language == "cpp":
+            ext = os.path.splitext(file)[1].lower()
+            ext_map = {'.py': 'python', '.c': 'c', '.h': 'c', '.hpp': 'cpp',
+                       '.cpp': 'cpp', '.cc': 'cpp', '.ll': 'llvm',
+                       '.s': 'riscv', '.S': 'riscv', '.asm': 'x86',
+                       '.sh': 'bash'}
+            language = ext_map.get(ext, language)
+
+    if not code_text:
+        code_text = ""
+
     lines = code_text.split('\n')
     nw = len(str(len(lines)))
 
     # 选择关键词集
-    if language in ("cpp", "c"):
+    lang_lower = language.lower()
+    if lang_lower in ("cpp", "c"):
         KWDS = _CPP_KEYWORDS
-    elif language in ("py", "python"):
+    elif lang_lower in ("py", "python"):
         KWDS = _PY_KEYWORDS
-    elif language in ("llvm", "ir"):
+    elif lang_lower in ("llvm", "ir"):
         KWDS = _CPP_KEYWORDS | _LLVM_KEYWORDS
+    elif lang_lower in ("riscv", "rv"):
+        KWDS = _RISCV_KEYWORDS
+    elif lang_lower in ("arm", "aarch64"):
+        KWDS = _ARM_KEYWORDS
+    elif lang_lower in ("x86", "asm"):
+        KWDS = _X86_KEYWORDS
+    elif lang_lower in ("bash", "sh"):
+        KWDS = _BASH_KEYWORDS
     else:
         KWDS = _CPP_KEYWORDS | _PY_KEYWORDS | _LLVM_KEYWORDS
 
     TYPES = _TYPE_KEYWORDS
+    if highlight_lines is None:
+        highlight_lines = []
+
+    # 标题
+    if caption:
+        cap = doc.add_paragraph(caption, 'FigCaption')
+        cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     spacer = doc.add_paragraph("", 'Normal')
     spacer.paragraph_format.space_before = Pt(6)
@@ -302,9 +350,9 @@ def add_code_block(doc: Document, code_text: str,
     tcPr.append(shading)
 
     TOKEN_RE = re.compile(
-        r'(//[^\n]*|/\*.*?\*/)'
-        r'|("(?:[^"\\]|\\.)*")'
-        r"|('(?:[^'\\]|\\.)*')"
+        r'(//[^\n]*|/\*.*?\*/|#.*|;.*)'      # comments
+        r'|("(?:[^"\\]|\\.)*")'              # double-quoted
+        r"|('(?:[^'\\]|\\.)*')"              # single-quoted
         r'|(\b0[xX][0-9a-fA-F]+\b|\b\d+\.?\d*(?:[eE][+-]?\d+)?\b)'
         r'|([a-zA-Z_]\w*)'
         r'|([{}()\[\];,:<>=+\-*/%&|^!~.@#\\]+)'
@@ -326,6 +374,12 @@ def add_code_block(doc: Document, code_text: str,
                     tokens.append((txt, style_config.code_keyword))
                 elif txt in TYPES:
                     tokens.append((txt, style_config.code_type))
+                elif txt.startswith('x') and txt[1:].isdigit():
+                    # ARM 寄存器 x0-x30
+                    tokens.append((txt, RGBColor(0xC0, 0x00, 0x00)))
+                elif txt.startswith('v') and txt[1:].isdigit():
+                    # ARM SIMD 寄存器 v0-v31
+                    tokens.append((txt, RGBColor(0xC0, 0x00, 0x00)))
                 else:
                     tokens.append((txt, style_config.color_black))
             elif m.group(6):
@@ -346,7 +400,16 @@ def add_code_block(doc: Document, code_text: str,
         p.paragraph_format.space_after = Pt(0)
         p.paragraph_format.line_spacing = 1.05
 
-        rn = p.add_run(f" {(i+1):>{nw}} │ ")
+        # 行高亮背景
+        line_num = i + 1
+        if line_num in highlight_lines:
+            pPr = p._p.get_or_add_pPr()
+            shd = OxmlElement('w:shd')
+            shd.set(qn('w:val'), 'clear')
+            shd.set(qn('w:fill'), 'FFF3CD')  # 淡黄
+            pPr.append(shd)
+
+        rn = p.add_run(f" {(line_num):>{nw}} │ ")
         rn.font.name = style_config.code_font
         rn.font.size = Pt(8)
         rn.font.color.rgb = RGBColor(0x80, 0x80, 0x80)
@@ -408,6 +471,102 @@ _TYPE_KEYWORDS = {
     'Value', 'User', 'Use', 'Instruction', 'BasicBlock',
     'Function', 'Module', 'IRType', 'TypeSystem',
     'PreservationStatus', 'PassID', 'PassManager',
+}
+
+_RISCV_KEYWORDS = {
+    # RISC-V instructions (RV64G)
+    'add', 'addi', 'addiw', 'addw', 'sub', 'subw',
+    'mul', 'mulw', 'div', 'divw', 'divu', 'divuw',
+    'rem', 'remw', 'remu', 'remuw',
+    'and', 'andi', 'or', 'ori', 'xor', 'xori',
+    'sll', 'slli', 'sllw', 'slliw', 'srl', 'srli', 'srlw', 'srliw',
+    'sra', 'srai', 'sraw', 'sraiw',
+    'slt', 'slti', 'sltu', 'sltiu',
+    'lb', 'lh', 'lw', 'ld', 'lbu', 'lhu', 'lwu',
+    'sb', 'sh', 'sw', 'sd',
+    'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu',
+    'jal', 'jalr', 'j', 'jr', 'ret',
+    'lui', 'auipc',
+    'ecall', 'ebreak', 'fence', 'fence.i',
+    # Float
+    'fadd', 'fsub', 'fmul', 'fdiv', 'fsqrt',
+    'fadd.s', 'fsub.s', 'fmul.s', 'fdiv.s',
+    'fcvt.s.d', 'fcvt.d.s', 'fcvt.w.s', 'fcvt.s.w',
+    'feq', 'flt', 'fle',
+    'fld', 'flw', 'fsd', 'fsw',
+    'fmv', 'fmv.s', 'fmv.d', 'fmv.w.x', 'fmv.x.w',
+    # Pseudo
+    'mv', 'li', 'la', 'nop', 'call', 'tail',
+    # CSRs
+    'csrr', 'csrw', 'csrs', 'csrc',
+    # Registers
+    'zero', 'ra', 'sp', 'gp', 'tp',
+    't0', 't1', 't2', 't3', 't4', 't5', 't6',
+    's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11',
+    'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7',
+    'ft0', 'ft1', 'ft2', 'ft3', 'ft4', 'ft5', 'ft6', 'ft7', 'ft8', 'ft9', 'ft10', 'ft11',
+    'fs0', 'fs1', 'fs2', 'fs3', 'fs4', 'fs5', 'fs6', 'fs7', 'fs8', 'fs9', 'fs10', 'fs11',
+    'fa0', 'fa1', 'fa2', 'fa3', 'fa4', 'fa5', 'fa6', 'fa7',
+    # Directives
+    '.text', '.data', '.bss', '.section', '.global', '.globl',
+    '.align', '.byte', '.half', '.word', '.dword', '.asciz', '.string',
+    '.equ', '.macro', '.endm', '.type', '.size', '.file', '.loc',
+}
+
+_ARM_KEYWORDS = {
+    # AArch64 instructions
+    'add', 'adds', 'sub', 'subs', 'mul', 'madd', 'msub',
+    'sdiv', 'udiv', 'and', 'ands', 'orr', 'eor', 'eon',
+    'lsl', 'lsr', 'asr', 'ror',
+    'mov', 'movk', 'movn', 'movz',
+    'ldr', 'ldrb', 'ldrh', 'ldrsw', 'ldp', 'ldnp',
+    'str', 'strb', 'strh', 'stp', 'stnp',
+    'cbz', 'cbnz', 'tbz', 'tbnz',
+    'b', 'bl', 'blr', 'br', 'ret',
+    'cmp', 'cmn', 'tst',
+    'csel', 'csinc', 'csinv', 'csneg',
+    'adr', 'adrp',
+    'fadd', 'fsub', 'fmul', 'fdiv', 'fmadd', 'fmsub',
+    'fcmp', 'fccmp', 'fcsel',
+    'fcvt', 'scvtf', 'ucvtf', 'fcvtzs', 'fcvtzu',
+    'ld1', 'ld2', 'ld3', 'ld4', 'st1', 'st2', 'st3', 'st4',
+    'fmov', 'fabs', 'fneg', 'fsqrt',
+    'svc', 'hlt', 'nop', 'msr', 'mrs',
+    # Conditions
+    'eq', 'ne', 'cs', 'hs', 'cc', 'lo', 'mi', 'pl',
+    'vs', 'vc', 'hi', 'ls', 'ge', 'lt', 'gt', 'le', 'al',
+    # Directives
+    '.text', '.data', '.bss', '.section', '.global', '.globl',
+    '.align', '.byte', '.hword', '.word', '.quad', '.asciz', '.string',
+    '.equ', '.macro', '.endm', '.type', '.size', '.cfi_startproc', '.cfi_endproc',
+}
+
+_X86_KEYWORDS = {
+    'mov', 'movsx', 'movzx', 'push', 'pop',
+    'add', 'sub', 'mul', 'imul', 'div', 'idiv',
+    'and', 'or', 'xor', 'not', 'neg',
+    'shl', 'shr', 'sar', 'rol', 'ror',
+    'lea', 'call', 'ret', 'jmp', 'je', 'jne', 'jz', 'jnz',
+    'jl', 'jle', 'jg', 'jge', 'jb', 'jbe', 'ja', 'jae',
+    'cmp', 'test',
+    'inc', 'dec', 'nop', 'int',
+    'rax', 'rbx', 'rcx', 'rdx', 'rsi', 'rdi', 'rbp', 'rsp',
+    'r8', 'r9', 'r10', 'r11', 'r12', 'r13', 'r14', 'r15',
+    'eax', 'ebx', 'ecx', 'edx', 'esi', 'edi', 'ebp', 'esp',
+    'xmm0', 'xmm1', 'xmm2', 'xmm3', 'xmm4', 'xmm5',
+    'xmm6', 'xmm7', 'xmm8', 'xmm9', 'xmm10', 'xmm11',
+    'xmm12', 'xmm13', 'xmm14', 'xmm15',
+    '.text', '.data', '.bss', '.section', '.global', '.globl',
+    '.align', '.byte', '.word', '.long', '.quad', '.asciz', '.string',
+}
+
+_BASH_KEYWORDS = {
+    'if', 'then', 'else', 'elif', 'fi', 'for', 'while', 'do', 'done',
+    'case', 'esac', 'in', 'function', 'return', 'exit',
+    'export', 'local', 'readonly', 'unset',
+    'echo', 'printf', 'cd', 'ls', 'mkdir', 'rm', 'cp', 'mv',
+    'grep', 'sed', 'awk', 'cat', 'head', 'tail', 'find', 'xargs',
+    'source', '.', '&&', '||', '|',
 }
 
 
@@ -573,4 +732,99 @@ def add_references(doc: Document, refs: List[str]):
     for ref in refs:
         p = doc.add_paragraph(ref, 'BodyText12')
         p.paragraph_format.first_line_indent = Cm(0)
+    return doc
+
+
+# ═══════════════════════════════════════════════════════════════
+# 页眉/页脚/页码
+# ═══════════════════════════════════════════════════════════════
+
+def add_page_numbers(doc: Document, position: str = "bottom_center",
+                     start_at: int = 1, style_config: StyleConfig = None):
+    """添加页码。
+
+    Args:
+        doc: Document
+        position: "bottom_center" | "bottom_right" | "top_center" | "top_right"
+        start_at: 起始页码
+        style_config: StyleConfig
+    """
+    if style_config is None:
+        style_config = StyleConfig()
+
+    section = doc.sections[-1]
+    footer = section.footer
+    footer.is_linked_to_previous = False
+
+    fp = footer.paragraphs[0]
+    if 'center' in position:
+        fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    else:
+        fp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
+    # PageNumber field
+    run = fp.add_run()
+    fldChar1 = run._r.makeelement(qn('w:fldChar'),
+                                   {qn('w:fldCharType'): 'begin'})
+    run._r.append(fldChar1)
+
+    run2 = fp.add_run()
+    instrText = OxmlElement('w:instrText')
+    instrText.set(qn('xml:space'), 'preserve')
+    instrText.text = ' PAGE '
+    run2._r.append(instrText)
+
+    run3 = fp.add_run()
+    fldChar2 = run3._r.makeelement(qn('w:fldChar'),
+                                    {qn('w:fldCharType'): 'separate'})
+    run3._r.append(fldChar2)
+
+    run4 = fp.add_run(str(start_at))
+    _set_font(run4, style_config.en_font, style_config.cn_font_body,
+              style_config.size_body)
+
+    run5 = fp.add_run()
+    fldChar3 = run5._r.makeelement(qn('w:fldChar'),
+                                    {qn('w:fldCharType'): 'end'})
+    run5._r.append(fldChar3)
+
+    # 设置起始页码
+    if start_at != 1:
+        sectPr = section._sectPr
+        pgNumType = OxmlElement('w:pgNumType')
+        pgNumType.set(qn('w:start'), str(start_at))
+        sectPr.append(pgNumType)
+
+    return doc
+
+
+def add_header_footer(doc: Document,
+                      header_text: str = "",
+                      show_page_number: bool = True,
+                      style_config: StyleConfig = None):
+    """统一设置页眉和页脚。
+
+    Args:
+        doc: Document
+        header_text: 页眉文字 (为空则不设页眉)
+        show_page_number: 是否显示页码
+        style_config: StyleConfig
+    """
+    if style_config is None:
+        style_config = StyleConfig()
+
+    section = doc.sections[-1]
+
+    if header_text:
+        header = section.header
+        header.is_linked_to_previous = False
+        hp = header.paragraphs[0]
+        hp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = hp.add_run(header_text)
+        _set_font(run, style_config.en_font, style_config.cn_font_body,
+                  style_config.size_header)
+
+    if show_page_number:
+        add_page_numbers(doc, style_config=style_config)
+
     return doc

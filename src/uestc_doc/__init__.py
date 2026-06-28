@@ -29,4 +29,6 @@ from .components import (
     add_table,
     add_chapter_start,
     add_references,
+    add_page_numbers,
+    add_header_footer,
 )
