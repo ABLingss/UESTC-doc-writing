@@ -1,9 +1,18 @@
 # UESTC-doc-writing
 
-> 电子科技大学学术报告/论文文档自动生成框架
+> 综设报告，一句话就够了。
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-green.svg)](LICENSE)
+[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Standard-green)](https://agentskills.io)
+[![skills.sh](https://img.shields.io/badge/skills.sh-Compatible-blue)](https://skills.sh)
+[![Multi-Runtime](https://img.shields.io/badge/Runtime-Claude%20Code%20·%20Codex%20·%20Cursor-blueviolet)](#-安装-skill)
+
+<br>
+
+**电子科技大学学术报告/论文文档自动生成框架。中期/后期双模板，Mermaid 图渲染，7 种语言代码高亮，C/C++/Python 源码提取，章节 Pipeline。**
+
+<sub>基于开放的 [Agent Skills 协议](https://agentskills.io)，可在 Claude Code、Codex、Cursor 等兼容 runtime 中运行。同时可作为 Python 库独立使用。</sub>
 [![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-orange)](SKILL.md)
 
 一套完整的 **Word 文档自动生成 Pipeline**，针对电子科技大学软件学院学术报告/论文模板深度优化。支持 Mermaid 图渲染、C/C++/Python 源码信息提取、章节 Pipeline 独立生成与合并。
@@ -24,13 +33,27 @@
 
 ---
 
-## 🤖 注册为 Claude Code Skill
+## 🤖 安装 Skill
 
-将本仓库注册为 Claude Code 技能后，直接在对话中说「帮我生成综设中期报告」即可让 AI 自动完成。
+本 Skill 基于开放的 [Agent Skills](https://agentskills.io) 协议，可在 Claude Code、Codex、Cursor 等兼容 runtime 中运行。
 
-> **注意：** `/plugin install` 搜索的是 Claude Code 官方插件市场，社区仓库不会出现在其中。请使用以下方式安装。
+### 方式一：自然语言安装（推荐）
 
-### 方法一：克隆仓库 + 本地注册（推荐）
+打开 Claude Code，直接说：
+
+```
+帮我安装这个 skill：https://github.com/ABLingss/UESTC-doc-writing
+```
+
+### 方式二：npx CLI 安装
+
+```bash
+npx skills add ABLingss/UESTC-doc-writing
+```
+
+支持 `-a claude-code` / `-a codex` / `-a cursor` 等参数指定 runtime。
+
+### 方式三：手动安装
 
 ```bash
 git clone https://github.com/ABLingss/UESTC-doc-writing.git
@@ -38,46 +61,25 @@ cd UESTC-doc-writing
 pip install -r requirements.txt
 ```
 
-然后在 Claude Code 对话中注册 skill：
+Skill 目录放到对应 runtime 的 skills 路径下：
+
+| Runtime | 路径 |
+|---|---|
+| Claude Code | `~/.claude/skills/uestc-doc-writing/` |
+| Codex CLI | `~/.codex/skills/uestc-doc-writing/` |
+| Cursor | `~/.cursor/skills/uestc-doc-writing/` |
+
+### 使用
+
+装好后直接用自然语言驱动：
+
 ```
-/skill add uestc-doc ./SKILL.md
+> 帮我生成一份综设中期报告，课题是XXX，指导老师是XXX
+> 给第三章加一个完成度评估表，包含前端/中端/后端三个模块
+> 把这段 LLVM IR 代码加到4.3节，用语法高亮
+> 渲染 DOCS.md 里的 Mermaid 图，插入到系统设计章节
+> 扫描 src/ 目录，提取所有 Pass 信息生成表格
 ```
-
-### 方法二：通过 URL 远程注册
-
-无需克隆，直接在 Claude Code 中输入：
-
-```
-/skill add uestc-doc https://raw.githubusercontent.com/ABLingss/UESTC-doc-writing/main/SKILL.md
-```
-
-### 方法三：手动编辑 settings.json
-
-编辑 `~/.claude/settings.json`，在 `skills` 数组中添加：
-
-```json
-{
-  "skills": [
-    {
-      "name": "uestc-doc",
-      "source": "https://raw.githubusercontent.com/ABLingss/UESTC-doc-writing/main/SKILL.md"
-    }
-  ]
-}
-```
-
-### 方法四：进入官方市场（需提交 PR）
-
-向 [anthropics/skills](https://github.com/anthropics/skills) 仓库提交 PR，审核通过后即可通过 `/plugin install` 搜索安装。本仓库已准备好 `.claude-plugin/marketplace.json`，可直接作为 PR 附件。
-
-### 注册后的使用效果
-
-注册后直接用自然语言驱动：
-
-- 「帮我生成一份综设中期报告，课题是XXX，指导老师是XXX」
-- 「给第三章加一个完成度评估表，包含前端/中端/后端三个模块」
-- 「把这段 LLVM IR 代码加到4.3节，用语法高亮」
-- 「渲染 DOCS.md 里的 Mermaid 图，插入到系统设计章节」
 - 「扫描 src/ 目录，提取所有 Pass 的分类和行数统计，生成表格」
 
 ---
