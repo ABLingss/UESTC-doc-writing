@@ -1,0 +1,10 @@
+# Core dependencies
+python-docx>=0.8.11
+Pillow>=9.0.0
+
+# Optional: for mmdc CLI rendering (requires Node.js)
+# Install @mermaid-js/mermaid-cli separately:
+#   npm install -g @mermaid-js/mermaid-cli
+
+# Development
+pytest>=7.0.0

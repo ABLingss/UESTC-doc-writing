@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtualenv
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated outputs
+output/
+*.docx
+!examples/*/output/*.docx
+!docs/*.docx
+
+# Mermaid rendered images (generated)
+output/mmd_images/
+output/mmd_sources/
+
+# Personal / sensitive
+.env
+*.local
+credentials.json
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Backup
+*.bak
+*.backup

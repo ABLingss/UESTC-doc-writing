@@ -1,0 +1,38 @@
+[project]
+name = "uestc-doc-writing"
+version = "1.0.0"
+description = "通用学术报告/论文文档自动生成框架 — 针对电子科技大学软院模板优化，支持 Mermaid 图渲染、代码提取、章节 Pipeline 生成"
+authors = [
+    {name = "ABLingss"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Software Development :: Documentation",
+]
+keywords = ["docx", "report", "thesis", "academic", "mermaid", "uestc", "compiler"]
+
+dependencies = [
+    "python-docx>=0.8.11",
+    "Pillow>=9.0.0",
+]
+
+[project.optional-dependencies]
+mmdc = ["nodejs-wheel"]  # requires @mermaid-js/mermaid-cli via npm
+dev = ["pytest>=7.0.0", "pytest-cov"]
+
+[project.scripts]
+uestc-doc = "uestc_doc.pipeline:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[tool.setuptools.packages.find]
+where = ["src"]
