@@ -28,25 +28,9 @@
 
 将本仓库注册为 Claude Code 技能后，直接在对话中说「帮我生成综设中期报告」即可让 AI 自动完成。
 
-### 方法一：从 Skill Market 一键安装（推荐）
+> **注意：** `/plugin install` 搜索的是 Claude Code 官方插件市场，社区仓库不会出现在其中。请使用以下方式安装。
 
-在 Claude Code 对话中输入：
-
-```
-/plugin install ABLingss/UESTC-doc-writing
-```
-
-Claude Code 会自动从 GitHub 拉取并注册技能。安装后直接对话即可触发。
-
-### 方法二：通过 /config 命令
-
-在 Claude Code 对话中输入：
-```
-/config
-```
-选择 **Skills** → **Add Skill** → 输入 `https://github.com/ABLingss/UESTC-doc-writing` 即可。
-
-### 方法三：克隆仓库本地注册
+### 方法一：克隆仓库 + 本地注册（推荐）
 
 ```bash
 git clone https://github.com/ABLingss/UESTC-doc-writing.git
@@ -54,10 +38,37 @@ cd UESTC-doc-writing
 pip install -r requirements.txt
 ```
 
-然后在 Claude Code 中：
+然后在 Claude Code 对话中注册 skill：
 ```
 /skill add uestc-doc ./SKILL.md
 ```
+
+### 方法二：通过 URL 远程注册
+
+无需克隆，直接在 Claude Code 中输入：
+
+```
+/skill add uestc-doc https://raw.githubusercontent.com/ABLingss/UESTC-doc-writing/main/SKILL.md
+```
+
+### 方法三：手动编辑 settings.json
+
+编辑 `~/.claude/settings.json`，在 `skills` 数组中添加：
+
+```json
+{
+  "skills": [
+    {
+      "name": "uestc-doc",
+      "source": "https://raw.githubusercontent.com/ABLingss/UESTC-doc-writing/main/SKILL.md"
+    }
+  ]
+}
+```
+
+### 方法四：进入官方市场（需提交 PR）
+
+向 [anthropics/skills](https://github.com/anthropics/skills) 仓库提交 PR，审核通过后即可通过 `/plugin install` 搜索安装。本仓库已准备好 `.claude-plugin/marketplace.json`，可直接作为 PR 附件。
 
 ### 注册后的使用效果
 
