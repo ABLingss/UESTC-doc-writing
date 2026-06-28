@@ -12,5 +12,5 @@ Usage:
 """
 
 from .cpp_scanner import scan_cpp_project, CppPassInfo
-from .python_scanner import scan_python_project, PyModuleInfo
+from .python_scanner import scan_python_project, to_markdown, PyModuleInfo
 from .common import ProjectOverview, CodeStats, scan_project
